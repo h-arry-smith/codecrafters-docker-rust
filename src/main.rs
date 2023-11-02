@@ -17,11 +17,10 @@ fn main() -> Result<()> {
     if output.status.success() {
         let std_out = std::str::from_utf8(&output.stdout)?;
         let std_err = std::str::from_utf8(&output.stderr)?;
-        println!("{}", std_out);
-        eprintln!("{}", std_err);
+        print!("{}", std_out);
+        eprint!("{}", std_err);
 
         let exit_code = output.status.code().unwrap_or(1);
-        dbg!(exit_code);
         std::process::exit(exit_code);
     } else {
         std::process::exit(1);
