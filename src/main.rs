@@ -31,6 +31,16 @@ fn main() -> Result<()> {
     // chdir into the new directory
     std::env::set_current_dir("/").context("Failed to chdir into new root")?;
 
+    const CLONE_NEWPID: libc::c_int = 0x20000000; // Constant value for creating a new PID namespace
+
+    // Call the unshare system call to create a new PID namespace
+    unsafe {
+        if libc::unshare(CLONE_NEWPID) != 0 {
+            eprintln!("Failed to create new PID namespace");
+            return Err(anyhow::anyhow!("Failed to create new PID namespace"));
+        }
+    }
+
     let output = std::process::Command::new("./init")
         .args(command_args)
         .stdout(Stdio::inherit())
