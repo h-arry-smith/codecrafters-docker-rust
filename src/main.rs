@@ -19,10 +19,9 @@ fn main() -> Result<()> {
         let std_err = std::str::from_utf8(&output.stderr)?;
         print!("{}", std_out);
         eprint!("{}", std_err);
-
+        Ok(())
+    } else {
         let exit_code = output.status.code().unwrap_or(1);
         std::process::exit(exit_code);
-    } else {
-        std::process::exit(1);
     }
 }
